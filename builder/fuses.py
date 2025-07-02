@@ -566,7 +566,6 @@ env.Replace(
         "-p",
         "$BOARD_MCU",
         "-C",
-        join(env.PioPlatform().get_package_dir("tool-avrdude") or "", "avrdude.conf"),
     ],
     FUSESFLAGS=[
         "-Ulock:w:%s:m" % lock,

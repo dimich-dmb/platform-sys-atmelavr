@@ -15,7 +15,7 @@
 from platformio.public import PlatformBase
 
 
-class AtmelavrPlatform(PlatformBase):
+class SysatmelavrPlatform(PlatformBase):
 
     def configure_default_packages(self, variables, targets):
         if not variables.get("board"):
@@ -34,37 +34,9 @@ class AtmelavrPlatform(PlatformBase):
             elif build_core in ("tiny", "tinymodern"):
                 framework_package = "framework-arduino-avr-attiny"
 
-            if build_core in (
-                "MiniCore",
-                "MegaCore",
-                "MightyCore",
-                "MajorCore",
-                "MicroCore",
-            ):
-                self.packages["tool-avrdude"]["version"] = "~1.70200.0"
-
             self.frameworks["arduino"]["package"] = framework_package
             self.packages[framework_package]["optional"] = False
             self.packages["framework-arduino-avr"]["optional"] = True
-
-        upload_protocol = variables.get(
-            "upload_protocol",
-            self.board_config(variables.get("board")).get(
-                "upload.protocol", ""))
-        disabled_tool = "tool-micronucleus"
-        required_tool = ""
-
-        if upload_protocol == "micronucleus":
-            disabled_tool = "tool-avrdude"
-
-        if "fuses" in targets or "bootloader" in targets:
-            required_tool = "tool-avrdude"
-
-        if required_tool in self.packages:
-            self.packages[required_tool]["optional"] = False
-
-        if disabled_tool in self.packages and disabled_tool != required_tool:
-            del self.packages[disabled_tool]
 
         return super().configure_default_packages(variables, targets)
 
