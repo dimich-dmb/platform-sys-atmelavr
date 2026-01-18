@@ -110,7 +110,8 @@ env.Append(
         "-Os",
         "-Wl,--gc-sections",
         "-flto",
-        "-fuse-linker-plugin"
+        "-fuse-linker-plugin",
+        "-Wl,-u,main"
     ],
 
     CPPDEFINES=CPPDEFINES,
